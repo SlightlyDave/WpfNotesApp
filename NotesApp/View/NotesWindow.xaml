@@ -59,7 +59,10 @@
                 <ToggleButton x:Name="underlineButton" Click="UnderlineButton_Click">
                     <TextBlock Text="A" FontWeight="Bold" FontStyle="Normal" TextDecorations="Underline"></TextBlock>
                 </ToggleButton>
+                <ComboBox x:Name="fontFamilyComboBox" Width="100" SelectionChanged="FontFamilyComboBox_SelectionChanged"></ComboBox>
+                <ComboBox x:Name="fontSizeComboBox" Width="50" IsEditable="True" SelectionChanged="FontSizeComboBox_SelectionChanged" TextBoxBase.TextChanged="FontSizeComboBox_TextChanged"></ComboBox>
             </ToolBar>
+            
         </ToolBarTray>
         <Grid>
             <RichTextBox x:Name="contentRichTestBox" TextChanged="ContentRichTestBox_TextChanged" SelectionChanged="ContentRichTestBox_SelectionChanged"></RichTextBox>

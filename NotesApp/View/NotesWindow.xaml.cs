@@ -28,6 +28,7 @@ namespace NotesApp.View
         {
             InitializeComponent();
             InitRecognizer();
+            InitFontSelections();
         }
 
         private void InitRecognizer()
@@ -44,6 +45,18 @@ namespace NotesApp.View
             
 
             recognizer.SpeechRecognized += Recognizer_SpeechRecognized;
+
+            
+        }
+
+        private void InitFontSelections()
+        {
+            var fontFamiles = Fonts.SystemFontFamilies.OrderBy(e => e.Source);
+            fontFamilyComboBox.ItemsSource = fontFamiles;
+
+            List<Double> fontSizes = new List<Double>() { 8, 9, 10, 11, 12, 14, 16, 28, 48, 60, 72 };
+
+            fontSizeComboBox.ItemsSource = fontSizes;
         }
 
         private void Recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
@@ -135,12 +148,39 @@ namespace NotesApp.View
         private void ContentRichTestBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var selectedWeight = contentRichTestBox.Selection.GetPropertyValue(Inline.FontWeightProperty);
-            var selectedStyle = contentRichTestBox.Selection.GetPropertyValue(Inline.FontStyleProperty);
-            var selectedTextDec = contentRichTestBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-
             boldButton.IsChecked = (selectedWeight != DependencyProperty.UnsetValue) && (selectedWeight.Equals(FontWeights.Bold));
+
+            var selectedStyle = contentRichTestBox.Selection.GetPropertyValue(Inline.FontStyleProperty);
             italicButton.IsChecked = (selectedStyle != DependencyProperty.UnsetValue) && (selectedStyle.Equals(FontStyles.Italic));
+
+
+            var selectedTextDec = contentRichTestBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             underlineButton.IsChecked = (selectedStyle != DependencyProperty.UnsetValue) && (selectedTextDec.Equals(TextDecorations.Underline));
+
+            fontFamilyComboBox.SelectedItem = contentRichTestBox.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+
+            fontSizeComboBox.SelectedItem = contentRichTestBox.Selection.GetPropertyValue(Inline.FontSizeProperty);
+        }
+
+        private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(fontFamilyComboBox.SelectedItem != null)
+            {
+                contentRichTestBox.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, fontFamilyComboBox.SelectedItem);
+            }
+        }
+
+        private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (fontSizeComboBox.SelectedItem != null)
+            {
+                contentRichTestBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.SelectedItem);
+            }
+        }
+
+        private void FontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }
